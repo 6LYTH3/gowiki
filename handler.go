@@ -3,7 +3,7 @@ package wiki
 import (
 	"fmt"
 	"regexp"
-	web "github.com/hoisie/web.go"
+	"web" 
 	"template"
 )
 
@@ -39,7 +39,7 @@ func saveHandler(ctx *web.Context, title string) {
 		ctx.Abort(500, "No body supplied.")
 		return
 	}
-	page := makePage(title, body[0])
+	page := makePage(title,string(body[0]))
 	page.save()
 	redirect(ctx, "view", title)
 }
@@ -55,7 +55,7 @@ func renderTmpl(ctx *web.Context, tmpl, title, body string) {
 		ctx.Abort(500, "Unable to Parse template file: "+err.String())
 		return
 	}
-	err = t.Execute(d, ctx)
+	err = t.Execute(ctx, d)
 	if err != nil {
 		ctx.Abort(500, "Unable to Execute template: "+err.String())
 	}

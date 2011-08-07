@@ -39,7 +39,7 @@ func saveHandler(ctx *web.Context, title string) {
 		ctx.Abort(500, "No body supplied.")
 		return
 	}
-	page := makePage(title,string(body[0]))
+	page := makePage(title,string(body))
 	page.save()
 	redirect(ctx, "view", title)
 }

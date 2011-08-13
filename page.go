@@ -8,6 +8,7 @@ import (
 type page struct {
 	title string
 	body  string
+	topic string
 }
 
 func safeTitle(title string) string { return titleRe.ReplaceAllString(title, "") }

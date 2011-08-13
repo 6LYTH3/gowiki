@@ -19,8 +19,8 @@ func init() {
 func viewHandler(ctx *web.Context, title string) {
 	page, err := loadPage(title)
 	if err != nil {
-		redirect(ctx, "edit", title)
-		return
+		redirect(ctx, "view", title)
+	return
 	}
 	renderTmpl(ctx, "view", page.title, makeLinks(page.body))
 }
@@ -29,6 +29,7 @@ func editHandler(ctx *web.Context, title string) {
 	page, err := loadPage(title)
 	if err != nil {
 		page = makePage(title, "")
+		redirect(ctx, "view",page.title)
 	}
 	renderTmpl(ctx, "edit", page.title, page.body)
 }
@@ -41,6 +42,11 @@ func saveHandler(ctx *web.Context, title string) {
 	}
 	page := makePage(title,string(body))
 	page.save()
+	redirect(ctx, "view", title)
+}
+
+
+func cancelHandler(ctx *web.Context, title string) {
 	redirect(ctx, "view", title)
 }
 
@@ -75,8 +81,9 @@ func makeLinks(body string) string {
 // prefix should be something like "/" or "/wiki/"
 func RegisterHandlers(prefix string) {
 	urlPrefix = prefix
-	web.Get(urlPrefix, func(ctx *web.Context) { redirect(ctx, "view", "FrontPage") })
+	web.Get(urlPrefix, func(ctx *web.Context) { redirect(ctx, "view", "FronPage") })
 	web.Get(urlPrefix+"view/(.+)", viewHandler)
 	web.Get(urlPrefix+"edit/(.+)", editHandler)
 	web.Post(urlPrefix+"save/(.+)", saveHandler)
+	web.Get(urlPrefix+"cancel/(.+)",cancelHandler)
 }

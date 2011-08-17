@@ -1,6 +1,15 @@
-<h1>{title}</h1>
-
+<script>
+	function path(){
+		var t = document.getElementById("topic").value;
+		var url = "{{prefix}}edit/";
+		url += t;
+		window.location = url;
+		}
+	</script>
+	<h1>{{title}}</h1>
+<input type="text" name="topic" id="topic" size="20" maxlength="20">
+<input type="button" onclick="path()"  value="create" />
 <p>
-	[<a href="{prefix}edit/{title}">edit</a>]
+[<a href="{{prefix}}edit/{{title}}">edit</a>]
 </p>
-<div>{body}</div>
+<div>{{body}}</div>

@@ -19,7 +19,8 @@ func init() {
 func viewHandler(ctx *web.Context, title string) {
 	page, err := loadPage(title)
 	if err != nil {
-		redirect(ctx, "view", title)
+	fmt.Println(err)
+	redirect(ctx, "edit", title)
 	return
 	}
 	renderTmpl(ctx, "view", page.title, makeLinks(page.body))
@@ -29,6 +30,7 @@ func editHandler(ctx *web.Context, title string) {
 	page, err := loadPage(title)
 	if err != nil {
 		page = makePage(title, "")
+		page.save()
 		redirect(ctx, "view",page.title)
 	}
 	renderTmpl(ctx, "edit", page.title, page.body)
@@ -56,7 +58,10 @@ func renderTmpl(ctx *web.Context, tmpl, title, body string) {
 		"title":  title,
 		"body":   body,
 	}
-	t, err := template.ParseFile("tmpl/"+tmpl+".html", nil)
+	t := template.New(nil)	
+	t.SetDelims("{{","}}")
+
+	err := t.ParseFile("tmpl/"+tmpl+".html")
 	if err != nil {
 		ctx.Abort(500, "Unable to Parse template file: "+err.String())
 		return
@@ -81,7 +86,7 @@ func makeLinks(body string) string {
 // prefix should be something like "/" or "/wiki/"
 func RegisterHandlers(prefix string) {
 	urlPrefix = prefix
-	web.Get(urlPrefix, func(ctx *web.Context) { redirect(ctx, "view", "FronPage") })
+	web.Get(urlPrefix, func(ctx *web.Context) { redirect(ctx, "view", "FrontPage") })
 	web.Get(urlPrefix+"view/(.+)", viewHandler)
 	web.Get(urlPrefix+"edit/(.+)", editHandler)
 	web.Post(urlPrefix+"save/(.+)", saveHandler)

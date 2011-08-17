@@ -1,10 +1,10 @@
-<h1>Editing {title}</h1>
+<h1>Editing {{title}}</h1>
 
-<form action="{prefix}save/{title}" method="POST">
-<div><textarea name="body" rows="20" cols="80">{body|html}</textarea></div>
+<form action="{{prefix}}save/{{title}}" method="POST">
+	<div><textarea name="body" rows="20" cols="80">{{body|html}}</textarea></div>
 <div>
 	<input type="submit" value="Save">
-	<input type="button" name="Cancel" value="Cancel" onclick="window.location ='../cancel/{title}'"/>
+	<input type="button" name="Cancel" value="Cancel" onclick="window.location ='../cancel/{{title}}'"/>
 </div>
 </form>
 

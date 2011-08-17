@@ -3,6 +3,7 @@ package wiki
 import (
 	"io/ioutil"
 	"os"
+	"fmt"
 )
 
 type page struct {
